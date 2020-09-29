@@ -1,5 +1,6 @@
 const createKnexClient = require('./knex-client');
 const createHomeApp = require('./app/home');
+const createRecordViewings = require('./app/record-viewings');
 
 function createConfig({env}) {
     const db = createKnexClient({
@@ -7,11 +8,13 @@ function createConfig({env}) {
     });
 
     const homeApp = createHomeApp({db});
+    const recordViewingsApp = createRecordViewings({db})
 
     return {
         env,
         db, 
-        homeApp
+        homeApp,
+        recordViewingsApp
     }
 }
 
