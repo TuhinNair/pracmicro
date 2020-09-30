@@ -5,7 +5,7 @@ function createActions({messageStore}){
     function recordViewing(traceId, videoId, userId) {
         const viewedEvent = {
             id: uuidv4(),
-            typee: 'VideoViewed',
+            type: 'VideoViewed',
             metadata: {
                 traceId,
                 userId
