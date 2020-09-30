@@ -1,20 +1,31 @@
 const createKnexClient = require('./knex-client');
 const createHomeApp = require('./app/home');
 const createRecordViewings = require('./app/record-viewings');
+const createPostgresClient = require('./postgres-client');
+const createMessageStore = require('./message-store');
 
 function createConfig({env}) {
-    const db = createKnexClient({
+    const knexClient = createKnexClient({
         connectionString: env.databaseUrl
     });
 
-    const homeApp = createHomeApp({db});
-    const recordViewingsApp = createRecordViewings({db})
+    const postgresClient = createPostgresClient({
+        connectionString: env.messageStoreConnectionString
+    });
+
+    const messageStore = createMessageStore({
+        db: postgresClient
+    });
+
+    const homeApp = createHomeApp({db: knexClient});
+    const recordViewingsApp = createRecordViewings({messageStore})
 
     return {
         env,
         db, 
         homeApp,
-        recordViewingsApp
+        recordViewingsApp,
+        messageStore
     }
 }
 
